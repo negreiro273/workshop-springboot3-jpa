@@ -38,8 +38,13 @@ public class Order implements Serializable {
 	@JoinColumn(name = "client_Id")
 	private User client;
 	
-		
-  //  @OneToMany(mappedBy = "id.order")
+	
+	/* 
+	 *  Id      -> Vem da Class OrderItem
+	 *  order   -> vem da Class OrderItemPK
+	 *  "Id.order"
+	*/	
+    @OneToMany(mappedBy = "Id.order")
 	private Set<OrderItem> items = new HashSet<>(); 	 
 	
 	
