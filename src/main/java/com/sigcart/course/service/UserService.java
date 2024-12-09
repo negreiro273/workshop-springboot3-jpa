@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.sigcart.course.entities.User;
 import com.sigcart.course.repositories.UserRepository;
+import com.sigcart.course.service.exceptions.DatabaseException;
 import com.sigcart.course.service.exceptions.ResourceNotFoundException;
 
 
@@ -38,8 +41,16 @@ public class UserService {
 	}
 	
 	public void delete(long id) {
+		try {
+			 
+			repository.deleteById(id);
+			 
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		}catch (DataIntegrityViolationException e ) {
+			throw new DatabaseException(e.getMessage());			
+		}
 		
-		repository.deleteById(id);
 	}
 	
 	
